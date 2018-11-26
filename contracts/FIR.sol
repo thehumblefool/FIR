@@ -12,37 +12,42 @@ contract FIR {
 		address filedBy;
 	}
 
-	event reportFoundEvent (
-		Report report
+	event reportFiledEvent (
+		string reportID
 	);
-
-	mapping(address => Report[]) public nodeWiseReports;
 
 	mapping(uint  => mapping(uint => Report)) public IDWiseReports;
 
 	mapping (address => uint) nodeID;
 
+	mapping (address => Report[]) public nodeWiseReports;
+
 	uint public nodeCount;
 	
-
 	constructor() public {
 		nodeCount = 0;
 	}
 
-	function fileFIR(uint _ID, string _name, uint _phone, string _report, string _time) {
+	function fileFIR(uint _ID, string _name, uint _phone, string _report, string _time) public {
 		if(nodeID[msg.sender]==0) {
 			++nodeCount;
 			nodeID[msg.sender] = nodeCount;
 		}
 		uint _half1ID = nodeID[msg.sender];
 		uint _half2ID = nodeWiseReports[msg.sender].length + 1;
-		string reportID = strConcat(strConcat(uint2str(_half1ID), "."), uint2str(_half2ID));
-		Report fir = Report(reportID, _ID, _name, _phone, _report, _time, msg.sender);
-		IDWiseReports[_half1ID][_half2ID] = fir;
-		nodeWiseReports[msg.sender].push(fir); 
+		string memory _reportID = strConcat(strConcat(uint2str(_half1ID), "."), uint2str(_half2ID));
+		Report memory _fir = Report(_reportID, _ID, _name, _phone, _report, _time, msg.sender);
+		IDWiseReports[_half1ID][_half2ID] = _fir;
+		nodeWiseReports[msg.sender].push(_fir);
+		emit reportFiledEvent(_reportID);
 	}
 
-	function uint2str(uint _i) public pure returns (string){
+	function getFIRByID(uint _half1ID, uint _half2ID) public view returns (string, uint, string, uint, string, string, address) {
+		Report memory _report = IDWiseReports[_half1ID][_half2ID];
+		return (_report.reportID, _report.ID, _report.name, _report.phone, _report.report, _report.time, _report.filedBy);
+	}
+
+	function uint2str(uint _i) internal pure returns (string){
 	    if (_i == 0) return "0";
 	    uint j = _i;
 	    uint length;
@@ -59,7 +64,7 @@ contract FIR {
 	    return string(bstr);
 	}
 
-	function strConcat(string _a, string _b) public returns (string){
+	function strConcat(string _a, string _b) internal pure returns (string){
 	    bytes memory _ba = bytes(_a);
 	    bytes memory _bb = bytes(_b);
 	    string memory ab = new string(_ba.length + _bb.length);
