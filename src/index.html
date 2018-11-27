@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +11,7 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
   </head>
+
   <body>
     <div class="container" style="width: 650px;">
 
@@ -23,21 +25,30 @@
           <button type="button" onClick="App.enableGetFIR();" class="btn btn-primary"> Search FIR </button>
         </div>
 
-        <div id="fileFIRForm" style="display: none;">
-          <form onSubmit="App.fileFIR();" >
+        <div id="fileFIRForm">
+          <form id="fForm">
             <input type="text" placeholder="&emsp;Identity Proof" id="fID"/><br>
             <input type="text" placeholder="&emsp;Name" id="fName"/><br>
-            <input type="text" placeholder="&emsp;Phone" id="fName"/><br>
-            <textarea placeholder="Elaborate the Report" id="fReport" rows="12" cols="70"> </textarea><br>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <input type="text" placeholder="&emsp;Phone" id="fPhone"/><br>
+            <textarea rows="12" cols="70" placeholder="   Report" id="fReport"></textarea><br>
+            <button type="button" class="btn btn-primary" onClick="App.fileFIR();">Submit</button>
           </form>
         </div>
 
         <div id="displayFIRForm">
-
+          <input type="text" placeholder="&emsp;FIR ID" id="dID"/>
+          <button type="text" class="btn btn-primary" onClick="App.getFIR();">Submit</button><br>
+          <table class="table">
+            <tbody id="out">
+              
+            </tbody>
+          </table>
         </div>
 
+      </div>
+
       <p id="accountAddress" class="text-center"></p>
+
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

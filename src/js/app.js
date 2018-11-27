@@ -39,12 +39,8 @@ App = {
       // Restart Chrome if you are unable to receive this event
       // This is a known issue with Metamask
       // https://github.com/MetaMask/metamask-extension/issues/2393
-      instance.reportFiledEvent({}, {
-        fromBlock: '0',
-        toBlock: 'latest'
-      }).watch(function(error, event) {
+      instance.reportFiledEvent({}, {}).watch(function(error, event) {
         alert("FIR is created with ID: " + event.args.reportID);
-        App.render();
       });
     });
   },
@@ -52,10 +48,8 @@ App = {
   render: function() {
 
     console.log("Render");
-    // $("#fileFIRForm").hide();
-    // $("#displayFIR").hide();
-
-    var FIRInstance;
+    // $("fileFIRForm").hide();
+    // $("displayFIRForm").hide();    
 
     // Load account data
     web3.eth.getCoinbase(function(err, account) {
@@ -64,46 +58,50 @@ App = {
         $("#accountAddress").html("Your Account: " + account);
       }
     });
-
-    // Load contract data
-    App.contracts.FIR.deployed().then(function(instance) {
-      FIRInstance = instance;
-
-      //1 File FIR
-      //2 Search FIR
-      /*var choice = parseInt(prompt("Enter your choice : "));
-      console.log(choice);
-      if(choice==1) {
-        FIRInstance.fileFIR(1, "Sai Pavan", 9501353370, "Lost a mobile", new Date().toString(), { from: App.account });
-      } else if(choice==2) {
-        var reportID = prompt("Enter ReportID ").split(".");
-        FIRInstance.getFIRByID(parseInt(reportID[0]), parseInt(reportID[1]), { from: App.account }).then(
-          function(result) {
-            console.log(result[0]);
-            console.log(result[1].toNumber());
-            console.log(result[2]);
-            console.log(result[3].toNumber());
-            console.log(result[4]);
-            console.log(result[5]);
-            console.log(result[6]);
-          });
-      }*/
-    });
   },
 
   enableFileFIR : function() {
+    console.log("enableFileFIR");
     $("fileFIRForm").show();
     $("displayFIRForm").hide();
   },
 
   enableGetFIR : function() {
+    console.log("enableGetFIR");
     $("displayFIRForm").show();
     $("fileFIRForm").hide();
   },
 
   fileFIR : function() {
     var ID = parseInt(document.getElementById("fID").value);
-    console.log(ID);
+    var name = document.getElementById("fName").value;
+    var phone = document.getElementById("fPhone").value;
+    var report = document.getElementById("fReport").value;
+    document.getElementById("fForm").reset();
+    App.contracts.FIR.deployed().then(function(instance) {
+      return instance.fileFIR(ID, name, phone, report, new Date().toString(), { from: App.account })
+    });
+  },
+
+  getFIR : function() {
+    var reportID = document.getElementById("dID").value.split(".");
+    App.contracts.FIR.deployed().then(function(instance) {
+      return instance.getFIRByID(parseInt(reportID[0]), parseInt(reportID[1]), { from: App.account }).then( function(result) {
+        var out = $("#out");
+        out.empty();
+        if(result[0]=="") {
+          alert("FIR not found");
+          return;
+        }
+        out.append("<tr><td>FIR ID: " + result[0] + "</td></tr>");
+        out.append("<tr><td>Name: " + result[2] + "</td></tr>");
+        out.append("<tr><td>ID: " + result[1].toNumber() + "</td></tr>");
+        out.append("<tr><td>Phone: " + result[3].toNumber() + "</td></tr>");
+        out.append("<tr><td>Time: " + result[4] + "</td></tr>");
+        out.append("<tr><td>Report: " + result[5] + "</td></tr>");
+        out.append("<tr><td>Officer: " + result[6] + "</td></tr>");
+      })
+    });
   },
 
 };
