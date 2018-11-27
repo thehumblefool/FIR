@@ -21,23 +21,28 @@
           <h1 class="text-center">First Information Report</h1>
           <hr/>
           <br/>
-          <button type="button" onClick="App.enableFileFIR();" class="btn btn-primary"> File FIR </button>
-          <button type="button" onClick="App.enableGetFIR();" class="btn btn-primary"> Search FIR </button>
+          <center>
+            <button type="button" onClick="App.enableFileFIR();" align="middle" class="btn btn-primary"> File FIR </button>
+            <button type="button" onClick="App.enableGetFIR();" align="middle" class="btn btn-primary"> Search FIR </button>
+          </center>
         </div>
 
         <div id="fileFIRForm">
           <form id="fForm">
-            <input type="text" placeholder="&emsp;Identity Proof" id="fID"/><br>
-            <input type="text" placeholder="&emsp;Name" id="fName"/><br>
-            <input type="text" placeholder="&emsp;Phone" id="fPhone"/><br>
-            <textarea rows="12" cols="70" placeholder="   Report" id="fReport"></textarea><br>
-            <button type="button" class="btn btn-primary" onClick="App.fileFIR();">Submit</button>
+            <table class="table">
+              <tbody id="fFIR">
+              
+              </tbody>
+            </table>
           </form>
         </div>
 
         <div id="displayFIRForm">
-          <input type="text" placeholder="&emsp;FIR ID" id="dID"/>
-          <button type="text" class="btn btn-primary" onClick="App.getFIR();">Submit</button><br>
+            <table align="center">
+              <tbody id="dFIR">
+              
+              </tbody>
+            </table>
           <table class="table">
             <tbody id="out">
               

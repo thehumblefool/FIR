@@ -62,14 +62,26 @@ App = {
 
   enableFileFIR : function() {
     console.log("enableFileFIR");
-    $("fileFIRForm").show();
-    $("displayFIRForm").hide();
+    var dFIR = $("#dFIR");
+    dFIR.empty();
+    var out = $("#out");
+    out.empty();
+    var fFIR = $("#fFIR");
+    fFIR.empty();
+    fFIR.append("<tr><td>" + "<input type=\"text\" placeholder=\"&emsp;Identity Proof\" id=\"fID\"/>" + "</td></tr>");
+    fFIR.append("<tr><td>" + "<input type=\"text\" placeholder=\"&emsp;Name\" id=\"fName\"/>" + "</td></tr>");
+    fFIR.append("<tr><td>" + "<input type=\"text\" placeholder=\"&emsp;Phone\" id=\"fPhone\"/>" + "</td></tr>");
+    fFIR.append("<tr><td>" + "<textarea rows=\"12\" cols=\"70\" placeholder=\"   Report\" id=\"fReport\"></textarea>" + "</td></tr>");
+    fFIR.append("<tr><td>" + "<button type=\"button\" class=\"btn btn-primary\" onClick=\"App.fileFIR();\">Submit</button>" + "</td></tr>");
   },
 
   enableGetFIR : function() {
     console.log("enableGetFIR");
-    $("displayFIRForm").show();
-    $("fileFIRForm").hide();
+    var fFIR = $("#fFIR");
+    fFIR.empty();
+    var dFIR = $("#dFIR");
+    dFIR.empty();
+    dFIR.append("<tr><td>" + "<input type=\"text\" placeholder=\"&emsp;FIR ID\" id=\"dID\"/><button type=\"text\" class=\"btn btn-primary\" onClick=\"App.getFIR();\">Submit</button>" + "</td></tr>");
   },
 
   fileFIR : function() {
@@ -97,8 +109,8 @@ App = {
         out.append("<tr><td>Name: " + result[2] + "</td></tr>");
         out.append("<tr><td>ID: " + result[1].toNumber() + "</td></tr>");
         out.append("<tr><td>Phone: " + result[3].toNumber() + "</td></tr>");
-        out.append("<tr><td>Time: " + result[4] + "</td></tr>");
-        out.append("<tr><td>Report: " + result[5] + "</td></tr>");
+        out.append("<tr><td>Time: " + result[5] + "</td></tr>");
+        out.append("<tr><td>Report: " + result[4] + "</td></tr>");
         out.append("<tr><td>Officer: " + result[6] + "</td></tr>");
       })
     });
